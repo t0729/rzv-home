@@ -1,1 +1,50 @@
-
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>説明</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <script>
+        function home(event) {
+            event.preventDefault();
+            const redirectBaseURL = "https://zisinn.f5.si/";
+            const queryParams = window.location.search;
+            const redirectURL = redirectBaseURL + queryParams;
+            window.location.href = redirectURL;
+        }
+    </script>
+    <style>
+        body{
+            text-align: center;
+            font-family: "Kosugi Maru",Arial, Helvetica, sans-serif;
+        }
+        b{
+            font-size: 30px;
+            font-weight: 600;
+        }
+        h1{
+            font-size: 50px;
+            font-weight: 900;
+        }
+        a{
+            font-size: 24px;
+            font-weight: 750;
+        }
+    </style>
+</head>
+<body>
+    <h1>説明</h1>
+    <b>
+        テスト版で動作確認後、安定版も更新します。<br>
+        バージョンは「v〇.〇.〇-〇」の形式で記載されています。<br>
+        テスト版は自宅サーバー、安定版はGitHubです。<br>
+        自宅サーバー(テスト版)は不安定な場合があります。<br>
+        片方が開けない場合は、もう一方を試してください。
+    </b>
+    <br><br><br>
+    <a href="#" onclick="home(event)">ホームに戻る</a>
+</body>
+</html>
