@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>リダイレクト</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
     <script>
-        let countdown = 10;
+        let countdown = 30;
 
         window.onload = function () {
             const redirectBaseURL = "https://stable.zisinn.f5.si/";
@@ -42,27 +45,47 @@
             const redirectURL = redirectBaseURL + queryParams;
             window.location.href = redirectURL;
         }
+        function explanation(event) {
+            event.preventDefault();
+            const redirectBaseURL = "https://zisinn.f5.si/explanation/";
+            const queryParams = window.location.search;
+            const redirectURL = redirectBaseURL + queryParams;
+            window.location.href = redirectURL;
+        }
     </script>
     <style>
         body{
             text-align: center;
-            font-family: sans-serif;
+            font-family: "Kosugi Maru",Arial, Helvetica, sans-serif;
         }
         p{
-            font-size: xxx-large;
-            font-weight: 900;
+            font-size: 80px;
+            font-weight: 1000;
         }
         a{
-            font-size: x-large;
+            font-size: 30px;
             font-weight: 600;
+        }
+        b{
+            font-size: 25px;
+            font-weight: 600;
+        }
+        c{
+            font-size: 28px;
         }
     </style>
 </head>
 <body>
-    <p><span id="countdown">10</span>秒で自動的に安定版を開きます。</p>
+    <p><span id="countdown">30</span>秒で自動的に安定版を開きます。</p>
     <br><br><br><br>
-    <a href="#" onclick="stable(event)">今すぐ安定版を開く</a>
-    <br><br>
-    <a href="#" onclick="beta(event)">今すぐテスト版を開く</a>
+    <a href="#" onclick="stable(event)">今すぐ安定版を開く</a><br><br>
+    <c>テスト版で動作の確認のできたものです。</c><br>
+    <b>v1.6.3-1</b>
+    <br><br><br><br>
+    <a href="#" onclick="beta(event)">今すぐテスト版を開く</a><br><br>
+    <c>正しく動作するかをテスト中のものです。</c><br>
+    <b>v1.6.3-2</b>
+    <br><br><br>
+    <a href="#" onclick="explanation(event)">説明を読む</a>
 </body>
 </html>
