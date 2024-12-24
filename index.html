@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リダイレクト</title>
+    <script>
+        let countdown = 10;
+
+        window.onload = function () {
+            const redirectBaseURL = "https://stable.zisinn.f5.si/";
+            const queryParams = window.location.search;
+            const redirectURL = redirectBaseURL + queryParams;
+
+            const countdownElement = document.getElementById('countdown');
+
+            const intervalId = setInterval(function() {
+                countdown--;
+                countdownElement.textContent = countdown;
+
+                if (countdown <= 0) {
+                    clearInterval(intervalId);
+                }
+            }, 1000);
+
+            setTimeout(function() {
+                window.location.href = redirectURL;
+            }, countdown * 1000);
+        };
+
+        function stable(event) {
+            event.preventDefault();
+            const redirectBaseURL = "https://stable.zisinn.f5.si/";
+            const queryParams = window.location.search;
+            const redirectURL = redirectBaseURL + queryParams;
+            window.location.href = redirectURL;
+        }
+        function beta(event) {
+            event.preventDefault();
+            const redirectBaseURL = "https://test.zisinn.f5.si/";
+            const queryParams = window.location.search;
+            const redirectURL = redirectBaseURL + queryParams;
+            window.location.href = redirectURL;
+        }
+    </script>
+    <style>
+        body{
+            text-align: center;
+            font-family: sans-serif;
+        }
+        p{
+            font-size: xxx-large;
+            font-weight: 900;
+        }
+        a{
+            font-size: x-large;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <p><span id="countdown">10</span>秒で自動的に安定版を開きます。</p>
+    <br><br><br><br>
+    <a href="#" onclick="stable(event)">今すぐ安定版を開く</a>
+    <br><br>
+    <a href="#" onclick="beta(event)">今すぐテスト版を開く</a>
+</body>
+</html>
