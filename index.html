@@ -4,127 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>リアルタイム地震ビューアー制限なし版</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
     <style>
-        body {
-            text-align: center;
-            font-family: "Kosugi Maru", Arial, Helvetica, sans-serif;
-        }
-        .countdown-text {
-            font-size: 80px;
-            font-weight: 1000;
-        }
-        .link {
-            font-size: 30px;
-            font-weight: 600;
-            display: block;
-            margin: 20px 0;
-        }
-        .subtext {
-            font-size: 28px;
-        }
-        .version {
-            font-size: 25px;
-            font-weight: 600;
-        }
-        .update {
-            font-size: 22px;
-            margin: 20px 0;
-        }
-        h1 {
-            font-size: 50px;
-            font-weight: 900;
-            margin: 50px 0 20px;
-        }
-        .explanation {
-            font-size: 30px;
-            font-weight: 600;
-            margin: 20px 0;
-        }
-        .accordion {
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 15px;
-            transition: 0.4s;
-        }
-        .active, .accordion:hover {
-            background-color: #ccc;
-        }
-        .panel {
-            padding: 0 18px;
-            display: none;
-            background-color: white;
-            overflow: hidden;
-        }
+        body { text-align: center; font-family: "Kosugi Maru", sans-serif; }
+        .countdown-text { font-size: 40px; font-weight: 1000; }
+        .link { font-size: 30px; font-weight: 600; display: block; margin: 20px 0; }
+        .slink { font-size: 25px; font-weight: 600; display: block; margin: 20px 0; }
+        .subtext { font-size: 28px; }
+        .version, .current-version { font-size: 22px; font-weight: 600; margin: 20px 0; }
+        .button { padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 15px; font-weight: 700;}
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; width: 80%; max-width: 1000px; text-align: left; }
+        .close { color: #aaa; float: right; font-size: 28px; cursor: pointer; }
+        .explanation { font-weight: 600; font-size: 28px; }
     </style>
     <script>
-        let countdown = 30;
-
-        window.onload = function () {
-            const redirectBaseURL = "https://stable.zisinn.f5.si/";
+        let countdown = 30, stopRequested = false;
+        window.onload = () => {
+            const countdownElem = document.getElementById('countdown');
             const queryParams = window.location.search;
-            const redirectURL = redirectBaseURL + queryParams;
-
-            const countdownElement = document.getElementById('countdown');
-
-            const intervalId = setInterval(function() {
-                countdown--;
-                countdownElement.textContent = countdown;
-
-                if (countdown <= 0) {
-                    clearInterval(intervalId);
+            const redirectURL = "https://stable.zisinn.f5.si/" + queryParams;
+            const timer = setInterval(() => {
+                if (!stopRequested && --countdown <= 0) {
+                    clearInterval(timer);
+                    location.href = redirectURL;
                 }
+                countdownElem.textContent = stopRequested ? "自動的に開きません" : countdown;
             }, 1000);
-
-            setTimeout(function() {
-                window.location.href = redirectURL;
-            }, countdown * 1000);
         };
-
-        function redirect(event, baseURL) {
-            event.preventDefault();
-            const queryParams = window.location.search;
-            const redirectURL = baseURL + queryParams;
-            window.location.href = redirectURL;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var acc = document.getElementsByClassName("accordion");
-            for (var i = 0; i < acc.length; i++) {
-                acc[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    var panel = this.nextElementSibling;
-                    if (panel.style.display === "block") {
-                        panel.style.display = "none";
-                    } else {
-                        panel.style.display = "block";
-                    }
-                });
-            }
-        });
+        const stopTimer = () => { stopRequested = true; document.getElementById('autoText').textContent = ""; };
+        const redirect = (event, url) => { event.preventDefault(); location.href = url + window.location.search; };
+        const toggleModal = id => document.getElementById(id).style.display = document.getElementById(id).style.display === "block" ? "none" : "block";
     </script>
 </head>
 <body>
-    <p class="countdown-text"><span id="countdown">30</span>秒で自動的に安定版を開きます。</p>
-    <a href="#" onclick="redirect(event, 'https://stable.zisinn.f5.si/')" class="link">今すぐ安定版を開く</a>
-    <p class="subtext">テスト版で動作の確認のできたものです。</p>
-    <p class="version">v1.6.3-1</p>
-    <p class="update">1.6.3にアップデート</p>
-    <a href="#" onclick="redirect(event, 'https://test.zisinn.f5.si/')" class="link">今すぐテスト版を開く</a>
-    <p class="subtext">正しく動作するかをテスト中のものです。</p>
-    <p class="version">v1.6.3-2</p>
-    <p class="update">地図上に震度が表示できなくなっていたものを<br>表示するように変更</p>
-    <a href="#" onclick="redirect(event, 'https://zisinn.f5.si/explanation/')" class="link">説明を読む</a>
-    
-    <h1>説明</h1>
-    <button class="accordion">説明を表示/隠す</button>
-    <div class="panel">
+    <h1>リアルタイム地震ビューアー制限なし版</h1>
+    <section>
+        <p class="countdown-text"><span id="countdown">30</span> <span id="autoText">秒で自動的に安定版を開きます</span></p>
+        <button class="button" onclick="stopTimer()">自動的に開かない</button>
+        <a href="#" onclick="redirect(event, 'https://stable.zisinn.f5.si/')" class="link">今すぐ安定版を開く</a>
+        <p class="subtext">テスト版で動作の確認のできたものです</p>
+        <p class="current-version">現在のバージョン: v1.6.3-1</p>
+        <a href="#" onclick="toggleModal('releaseNotesStable')" class="slink">リリースノート</a>
+    </section>
+    <br><br>
+    <section>
+        <a href="#" onclick="redirect(event, 'https://test.zisinn.f5.si/')" class="link">今すぐテスト版を開く</a>
+        <p class="subtext">正しく動作するかをテスト中のものです</p>
+        <p class="current-version">現在のバージョン: v1.6.3-1</p>
+        <a href="#" onclick="toggleModal('releaseNotesTest')" class="slink">リリースノート</a>
+    </section>
+    <a href="#" onclick="toggleModal('explanationModal')" class="link">説明</a>
+    <div id="explanationModal" class="modal"><div class="modal-content">
+        <span class="close" onclick="toggleModal('explanationModal')">&times;</span>
         <p class="explanation">
             テスト版で動作確認後、安定版も更新します。<br>
             バージョンは「v〇.〇.〇-〇」の形式で記載されています。<br>
@@ -132,7 +64,14 @@
             自宅サーバー(テスト版)は不安定な場合があります。<br>
             片方が開けない場合は、もう一方を試してください。
         </p>
-    </div>
-    <a href="#" onclick="redirect(event, 'https://zisinn.f5.si/')" class="link">ホームに戻る</a>
+    </div></div>
+    <div id="releaseNotesStable" class="modal"><div class="modal-content">
+        <span class="close" onclick="toggleModal('releaseNotesStable')">&times;</span>
+        <p class="explanation">v1.6.3-1: 1.6.3にアップデート</p>
+    </div></div>
+    <div id="releaseNotesTest" class="modal"><div class="modal-content">
+        <span class="close" onclick="toggleModal('releaseNotesTest')">&times;</span>
+        <p class="explanation">v1.6.3-1: 地図上に震度が表示できなくなっていたものを修正</p>
+    </div></div>
 </body>
 </html>
