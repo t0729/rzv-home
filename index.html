@@ -3,10 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>リダイレクト</title>
+    <title>リアルタイム地震ビューアー制限なし版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: "Kosugi Maru", Arial, Helvetica, sans-serif;
+        }
+        .countdown-text {
+            font-size: 80px;
+            font-weight: 1000;
+        }
+        .link {
+            font-size: 30px;
+            font-weight: 600;
+            display: block;
+            margin: 20px 0;
+        }
+        .subtext {
+            font-size: 28px;
+        }
+        .version {
+            font-size: 25px;
+            font-weight: 600;
+        }
+        .update {
+            font-size: 22px;
+            margin: 20px 0;
+        }
+        h1 {
+            font-size: 50px;
+            font-weight: 900;
+            margin: 50px 0 20px;
+        }
+        .explanation {
+            font-size: 30px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .accordion {
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+        .panel {
+            padding: 0 18px;
+            display: none;
+            background-color: white;
+            overflow: hidden;
+        }
+    </style>
     <script>
         let countdown = 30;
 
@@ -31,66 +87,52 @@
             }, countdown * 1000);
         };
 
-        function stable(event) {
+        function redirect(event, baseURL) {
             event.preventDefault();
-            const redirectBaseURL = "https://stable.zisinn.f5.si/";
             const queryParams = window.location.search;
-            const redirectURL = redirectBaseURL + queryParams;
+            const redirectURL = baseURL + queryParams;
             window.location.href = redirectURL;
         }
-        function beta(event) {
-            event.preventDefault();
-            const redirectBaseURL = "https://test.zisinn.f5.si/";
-            const queryParams = window.location.search;
-            const redirectURL = redirectBaseURL + queryParams;
-            window.location.href = redirectURL;
-        }
-        function explanation(event) {
-            event.preventDefault();
-            const redirectBaseURL = "https://zisinn.f5.si/explanation/";
-            const queryParams = window.location.search;
-            const redirectURL = redirectBaseURL + queryParams;
-            window.location.href = redirectURL;
-        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var acc = document.getElementsByClassName("accordion");
+            for (var i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.display === "block") {
+                        panel.style.display = "none";
+                    } else {
+                        panel.style.display = "block";
+                    }
+                });
+            }
+        });
     </script>
-    <style>
-        body{
-            text-align: center;
-            font-family: "Kosugi Maru",Arial, Helvetica, sans-serif;
-        }
-        p{
-            font-size: 80px;
-            font-weight: 1000;
-        }
-        a{
-            font-size: 30px;
-            font-weight: 600;
-        }
-        b{
-            font-size: 25px;
-            font-weight: 600;
-        }
-        c{
-            font-size: 28px;
-        }
-        d{
-            font-size: 22px;
-        }
-    </style>
 </head>
 <body>
-    <p><span id="countdown">30</span>秒で自動的に安定版を開きます。</p>
-    <br><br><br><br>
-    <a href="#" onclick="stable(event)">今すぐ安定版を開く</a><br><br>
-    <c>テスト版で動作の確認のできたものです。</c><br>
-    <b>v1.6.3-1</b>
-    <d>1.6.3にアップデート</d>
-    <br><br><br><br>
-    <a href="#" onclick="beta(event)">今すぐテスト版を開く</a><br><br>
-    <c>正しく動作するかをテスト中のものです。</c><br>
-    <b>v1.6.3-2</b>
-    <d>地図上に震度が表示できなくなっていたものを<br>表示するように変更</d>
-    <br><br><br>
-    <a href="#" onclick="explanation(event)">説明を読む</a>
+    <p class="countdown-text"><span id="countdown">30</span>秒で自動的に安定版を開きます。</p>
+    <a href="#" onclick="redirect(event, 'https://stable.zisinn.f5.si/')" class="link">今すぐ安定版を開く</a>
+    <p class="subtext">テスト版で動作の確認のできたものです。</p>
+    <p class="version">v1.6.3-1</p>
+    <p class="update">1.6.3にアップデート</p>
+    <a href="#" onclick="redirect(event, 'https://test.zisinn.f5.si/')" class="link">今すぐテスト版を開く</a>
+    <p class="subtext">正しく動作するかをテスト中のものです。</p>
+    <p class="version">v1.6.3-2</p>
+    <p class="update">地図上に震度が表示できなくなっていたものを<br>表示するように変更</p>
+    <a href="#" onclick="redirect(event, 'https://zisinn.f5.si/explanation/')" class="link">説明を読む</a>
+    
+    <h1>説明</h1>
+    <button class="accordion">説明を表示/隠す</button>
+    <div class="panel">
+        <p class="explanation">
+            テスト版で動作確認後、安定版も更新します。<br>
+            バージョンは「v〇.〇.〇-〇」の形式で記載されています。<br>
+            テスト版は自宅サーバー、安定版はGitHubです。<br>
+            自宅サーバー(テスト版)は不安定な場合があります。<br>
+            片方が開けない場合は、もう一方を試してください。
+        </p>
+    </div>
+    <a href="#" onclick="redirect(event, 'https://zisinn.f5.si/')" class="link">ホームに戻る</a>
 </body>
 </html>
