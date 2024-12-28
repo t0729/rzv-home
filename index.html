@@ -89,58 +89,17 @@
     <div id="releaseNotesStable" class="modal"><div class="modal-content">
         <span class="close" onclick="toggleModal('releaseNotesStable')">&times;</span>
         <div id="result"></div>
-        <script type="text/javascript">
-          let result = document.getElementById('result');
-          let xhr = new XMLHttpRequest();
-          xhr.open('GET', 'release_notes_stable.txt', true);
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                result.textContent = '';
-                let lines = xhr.responseText.split('\n');
-                let line = '';
-                for(i = 0; i < lines.length; i++) {
-                  line += lines[i] + '<br />';
-                }
-                result.insertAdjacentHTML('afterbegin', line);
-              } else {
-                result.textContent = 'エラーが発生しました';
-              }
-            } else {
-              result.textContent = '通信中...';
-            }
-          };
-          xhr.send(null);
-        </script>
-        <noscript>JavaScriptが利用できません</noscript>
+        v1.6.3-2<br>
+        -地図上に震度が表示されなくなっていたものを表示されるように変更
+        <br><br>
+        v1.6.3-1<br>
+        -1.6.3に更新
     </div></div>
     <div id="releaseNotesTest" class="modal"><div class="modal-content">
         <span class="close" onclick="toggleModal('releaseNotesTest')">&times;</span>
         <div id="result-test"></div>
-        <script type="text/javascript">
-          let resultTest = document.getElementById('result-test');
-          let xhrTest = new XMLHttpRequest();
-          xhrTest.open('GET', 'release_notes_test.txt', true);
-          xhrTest.onreadystatechange = function() {
-            if (xhrTest.readyState === 4) {
-              if (xhrTest.status === 200) {
-                resultTest.textContent = '';
-                let lines = xhrTest.responseText.split('\n');
-                let line = '';
-                for(i = 0; i < lines.length; i++) {
-                  line += lines[i] + '<br />';
-                }
-                resultTest.insertAdjacentHTML('afterbegin', line);
-              } else {
-                resultTest.textContent = 'エラーが発生しました';
-              }
-            } else {
-              resultTest.textContent = '通信中...';
-            }
-          };
-          xhrTest.send(null);
-        </script>
-        <noscript>JavaScriptが利用できません</noscript>
+        v1.6.3-2<br>
+        -地図上に震度が表示されなくなっていたものを表示されるように変更
     </div></div>
 </body>
 </html>
