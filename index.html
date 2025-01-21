@@ -12,7 +12,7 @@
         .slink { font-size: 25px; font-weight: 600; display: block; margin: 20px 0; }
         .subtext { font-size: 28px; }
         .version, .current-version { font-size: 22px; font-weight: 600; margin: 20px 0; }
-        .button { padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 15px; font-weight: 700;}
+        .button { padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 15px; font-weight: 700; }
         .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
         .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; width: 80%; max-width: 1000px; text-align: left; }
         .close { color: #aaa; float: right; font-size: 28px; cursor: pointer; }
@@ -37,9 +37,10 @@
             document.getElementById('autoText').textContent = "";
         }
 
-        function redirect(event, url) {
+        function redirect(event, baseUrl) {
             event.preventDefault();
-            location.href = url;
+            const queryParams = window.location.search;
+            location.href = baseUrl + queryParams;
         }
 
         window.onload = () => {
